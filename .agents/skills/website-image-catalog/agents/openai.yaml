@@ -1,0 +1,4 @@
+interface:
+  display_name: "Website Image Catalog"
+  short_description: "Create and maintain an AI-readable website image catalog"
+  default_prompt: "Set up or update the website image catalog from assets and web image URLs."
