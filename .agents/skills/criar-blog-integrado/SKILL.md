@@ -1,6 +1,6 @@
 ---
 name: criar-blog-integrado
-description: Criar ou ampliar um blog em sites Next.js, reproduzindo a estrutura editorial deste projeto sem copiar sua marca. Use quando for necessário adicionar o link Blog ao header, criar a vitrine em app/blog e publicar vários artigos em subpastas próprias, sempre adaptados ao conteúdo, à identidade visual e às convenções do site-alvo.
+description: Criar ou ampliar um blog em sites Next.js, reproduzindo a estrutura editorial deste projeto sem copiar sua marca. Use quando for necessário adicionar o link Blog ao header, criar a vitrine em app/blog e publicar vários artigos como componentes de página independentes em subpastas próprias, sempre adaptados ao conteúdo, à identidade visual e às convenções do site-alvo.
 ---
 
 # Criar um blog integrado ao site
@@ -40,7 +40,13 @@ app/
 
 Crie uma pasta explícita, com `page.tsx`, para cada artigo. Use slugs curtos, descritivos, em minúsculas, sem acentos e separados por hífens. Não substitua essas várias pastas por uma única rota dinâmica, salvo quando o usuário ou a arquitetura já existente do projeto exigir conteúdo dinâmico.
 
-Quando ajudar a evitar duplicação, crie componentes ou dados compartilhados em locais coerentes com o projeto, como `components/blog/` ou um módulo de dados. Isso é opcional: não reorganize áreas não relacionadas nem faça uma refatoração ampla apenas para incluir o blog.
+### Um componente de página por artigo
+
+Cada `app/blog/<slug>/page.tsx` deve ser um componente de página independente e conter diretamente a composição e o conteúdo editorial daquele artigo. O resultado deve ter vários componentes de página dentro de `app/blog` — um em cada pasta de slug — e não um único componente reutilizável usado para renderizar todos os slugs.
+
+Não crie um componente genérico como `BlogPost`, `ArticlePage`, `PostTemplate` ou equivalente que receba por props ou por um objeto o título, os parágrafos, as seções, a imagem e o CTA de cada artigo. Também não reduza cada `page.tsx` a uma chamada como `<BlogPost post={...} />`, nem concentre o corpo completo dos artigos em um catálogo compartilhado para injetá-lo nos slugs. Mesmo quando duas páginas têm estrutura visual parecida, escreva em cada `page.tsx` seu próprio componente, metadata, cabeçalho, corpo, seções e CTA, seguindo o padrão de páginas independentes deste projeto de referência.
+
+É permitido compartilhar apenas elementos pequenos e verdadeiramente transversais da interface, como botão de voltar, breadcrumb, ícone, formatação de data ou card da vitrine. Esses elementos não podem encapsular a página inteira nem receber o conteúdo completo do artigo. Um catálogo comum pode alimentar os cards de `app/blog/page.tsx` e armazenar campos curtos usados para manter a listagem sincronizada, mas o texto editorial e a composição de cada post devem permanecer no `page.tsx` do respectivo slug.
 
 ## Integrar o header
 
@@ -136,6 +142,7 @@ Ao terminar:
 3. confirme que as imagens dos artigos vieram do Unsplash ou de outra fonte online válida, que nenhuma imagem editorial existente do projeto foi reutilizada e que URLs, créditos e configuração de domínios remotos estão corretos;
 4. execute os scripts de typecheck e lint disponíveis no `package.json`;
 5. execute o build quando for viável e proporcional ao projeto;
-6. corrija erros causados pela implementação sem alterar conteúdo não relacionado.
+6. corrija erros causados pela implementação sem alterar conteúdo não relacionado;
+7. confirme que cada slug possui seu próprio componente de página e que nenhum componente ou template genérico renderiza o corpo completo de vários artigos.
 
 Considere a tarefa concluída somente quando o item Blog aparece e funciona nos menus aplicáveis, a vitrine está responsiva e coerente com a marca, todas as subpastas de artigos abrem corretamente, os conteúdos pertencem ao nicho do site e as rotas relevantes estão cobertas pelo mecanismo de SEO do projeto.
